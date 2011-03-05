@@ -23,10 +23,12 @@ done*/
 #include <stdio.h>
 #include "RtMidi.h"
 #include <vector>
+#include <string>
 
 struct callbackContext {
 	HANDLE event;
 	std::vector<unsigned char> * output;
+	std::string threadName;
 };
 
 void in_callback(double dt, std::vector<unsigned char> *message, void *userData)
@@ -35,7 +37,7 @@ void in_callback(double dt, std::vector<unsigned char> *message, void *userData)
 	unsigned int nBytes = message->size();
 	if(nBytes > 0)
 	{
-		printf("Called MIDI callback.\n");
+		printf("Called MIDI callbacki %s.\n", con->threadName.c_str());
 		*(con->output) = *(message);
 		SetEvent(con->event);
 	}
@@ -46,8 +48,16 @@ int main()
 	callbackContext c;
 	c.event = CreateEvent(0, FALSE, FALSE, 0);
 	c.output = new std::vector<unsigned char>;
+	c.threadName = "A";
+
+	callbackContext d;
+	d.event = c.event;
+	d.output = new std::vector<unsigned char>;
+	d.threadName = "B";
+
 
 	RtMidiIn *midiin = new RtMidiIn();
+	RtMidiIn *mi2 = new RtMidiIn();
 
 	printf("MIDI In Ports:\n");
 	unsigned int nPorts = midiin->getPortCount();
@@ -55,8 +65,11 @@ int main()
 		printf("\t%d: %s\n", i, midiin->getPortName(i).c_str());
 
 	midiin->openPort(1);
+	mi2->openPort(1);
 	midiin->ignoreTypes(false, false, false);
+	mi2->ignoreTypes(false, false, false);
 	midiin->setCallback( &in_callback, &c.event );
+	mi2->setCallback( &in_callback, &c.event );
 
 	printf("Waiting for MIDI messages...\n");
 
