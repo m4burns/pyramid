@@ -13,6 +13,9 @@ class MapperCtl {
 public:
 	MapperCtl()
 	{
+		deadMutex = CreateMutex(NULL, FALSE, NULL);
+		dead = false;
+
 		inPorts = MIDIListener::enumerateInputPorts();
 		outPorts = MIDIWriter::enumerateOutputPorts();
 
@@ -24,6 +27,8 @@ public:
 			++p;
 		}
 
+		printf("\n");
+
 		printf("Outputs: \n");
 		p = outPorts.begin();
 		while(p != outPorts.end())
@@ -31,11 +36,22 @@ public:
 			printf("\t%s => %d\n", p->first.c_str(), p->second);
 			++p;
 		}
+
+		printf("\n");
 	}
 
 	~MapperCtl()
 	{
+		printf("\nShutdown received, cleaning up...\n\n");
+		for(std::map<int, MIDIListener*>::iterator p = ins.begin(); p != ins.end(); ++p)
+			delete p->second;
+		for(std::map<int, MIDIWriter*>::iterator p = outs.begin(); p != outs.end(); ++p)
+			delete p->second;
 
+		CloseHandle(deadMutex);
+		CloseHandle(event);
+
+		_this = NULL;
 	}
 
 	static MapperCtl* get()
@@ -53,6 +69,7 @@ public:
 		char c = 0;
 		int pnum = 0;
 		int mode = 0;
+		int ord = mappers.size()+1;
 		bool bound = false;
 		while(!is.eof())
 		{
@@ -65,9 +82,9 @@ public:
 			else if(buf == "<=")
 				mode = 0;
 			else {
-				printf("Error: Invalid mode: %s\n", buf.c_str());
+				printf("Warning: Mapper %d: Invalid mode: %s\n", ord, buf.c_str());
 				is >> buf;
-				continue;
+				break;
 			}
 
 			buf = "";
@@ -86,7 +103,7 @@ public:
 			if(mode == 0) {
 				std::map<std::string, int>::iterator port = inPorts.find(buf);
 				if(port == inPorts.end()) {
-					printf("Error: Invalid input port: '%s'\n", buf.c_str());
+					printf("Warning: Mapper %d: Invalid input port: '%s'\n", ord, buf.c_str());
 					continue;
 				}
 				ins[port->second] = NULL;
@@ -96,7 +113,7 @@ public:
 			} else {
 				std::map<std::string, int>::iterator port = outPorts.find(buf);
 				if(port == outPorts.end()) {
-					printf("Error: Invalid output port: '%s'\n", buf.c_str());
+					printf("Warning: Mapper %d: Invalid output port: '%s'\n", ord, buf.c_str());
 					continue;
 				}
 				outs[port->second] = NULL;
@@ -105,19 +122,20 @@ public:
 			}
 		}
 		if(!bound)
-			printf("Warning: Mapper not bound to any inputs.\n");
+			printf("Warning: Mapper %d not bound to any inputs.\n", ord);
 	}
 
 	void run()
 	{
-		printf("Entering main loop.\n");
+		printf("Opening MIDI inputs and outputs... ");
 		event = CreateEvent(0, FALSE, FALSE, 0);
 		for(std::map<int, MIDIListener*>::iterator p = ins.begin(); p != ins.end(); ++p)
 			p->second = new MIDIListener(p->first, event);
 		for(std::map<int, MIDIWriter*>::iterator p = outs.begin(); p != outs.end(); ++p)
 			p->second = new MIDIWriter(p->first);
 
-		while(true)
+		printf("OK, entering main loop.");
+		while(!die())
 		{
 			WaitForSingleObject(event, INFINITE);
 			for(std::map<int, MIDIListener*>::iterator p = ins.begin(); p != ins.end(); ++p)
@@ -193,6 +211,23 @@ public:
 		outs[aport]->sendMessage(msg);
 	}
 
+	bool die()
+	{
+		bool r;
+		WaitForSingleObject(deadMutex, INFINITE);
+		r = dead;
+		ReleaseMutex(deadMutex);
+		return r;
+	}
+
+	void kill()
+	{
+		WaitForSingleObject(deadMutex, INFINITE);
+		dead = true;
+		ReleaseMutex(deadMutex);
+		SetEvent(event);
+	}
+
 private:
 	static MapperCtl* _this;
 	std::map<std::string, int> inPorts;
@@ -201,6 +236,8 @@ private:
 	std::map<int, MIDIWriter*> outs;
 	std::multimap<int, PythonMapper*> mappers;
 	HANDLE event;
+	HANDLE deadMutex;
+	bool dead;
 };
 
 MapperCtl* MapperCtl::_this = NULL;
@@ -217,12 +254,14 @@ bool PythonMapper::selectPorts(std::string portsConfig)
 
 void PythonMapper::sendNote(int port, MIDINote note)
 {
-	MapperCtl::get()->noteToOutput(outmap[port], note);
+	if(outmap.find(port) != outmap.end())
+		MapperCtl::get()->noteToOutput(outmap[port], note);
 }
 
 void PythonMapper::sendControl(int port, MIDIControlVal cv)
 {
-	MapperCtl::get()->controlToOutput(outmap[port], cv);
+	if(outmap.find(port) != outmap.end())
+		MapperCtl::get()->controlToOutput(outmap[port], cv);
 }
 
 int mapper_main()
@@ -230,7 +269,13 @@ int mapper_main()
 	MapperCtl* mc = MapperCtl::get();
 
 	mc->run();
+	delete mc;
 
 	return 0;
+}
+
+void kill_mapper()
+{
+	MapperCtl::get()->kill();
 }
 

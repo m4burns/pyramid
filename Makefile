@@ -1,5 +1,5 @@
 CXX=/home/marc/mingw-cross/usr/bin/i686-pc-mingw32-g++
-CXXFLAGS=-D__WINDOWS_MM__ -I./rtmidi-1.0.12/ -I./Python27/include
+CXXFLAGS=-D__WINDOWS_MM__ -I./rtmidi-1.0.12/ -I./Python27/include -g
 
 all: pyramid
 
@@ -16,7 +16,7 @@ MIDIMapper.o: MIDIMapper.cpp
 	$(CXX) $(CXXFLAGS) -c MIDIMapper.cpp
 
 pyramid_wrap.cxx: pyramid.i PythonMapper.h
-	swig -Wall -features directors -noexcept -c++ -python pyramid.i
+	swig -Wall -features directors -c++ -python pyramid.i
 
 pyramid_wrap.o: pyramid_wrap.cxx
 	$(CXX) $(CXXFLAGS) -c pyramid_wrap.cxx
