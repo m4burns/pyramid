@@ -7,6 +7,7 @@
 #include "MIDIListener.h"
 #include "MIDIWriter.h"
 #include "PythonMapper.h"
+#include "MapperInterface.h"
 
 // Singleton.
 class MapperCtl {
@@ -238,9 +239,33 @@ private:
 	HANDLE event;
 	HANDLE deadMutex;
 	bool dead;
+	friend class MapperInterface;
 };
 
 MapperCtl* MapperCtl::_this = NULL;
+
+MapperInterface::MapperInterface()
+{
+	ctl = MapperCtl::get();
+}
+
+std::vector<std::string> MapperInterface::getInputs()
+{
+	std::vector<std::string> res;
+	for(std::map<std::string, int>::iterator p = ctl->inPorts.begin(); p != ctl->inPorts.end(); ++p)
+		if(ctl->ins.find(p->second) != ctl->ins.end())
+			res.push_back(p->first);
+	return res;
+}
+
+std::vector<std::string> MapperInterface::getOutputs()
+{
+	std::vector<std::string> res;
+	for(std::map<std::string, int>::iterator p = ctl->outPorts.begin(); p != ctl->outPorts.end(); ++p)
+		if(ctl->outs.find(p->second) != ctl->outs.end())
+			res.push_back(p->first);
+	return res;
+}
 
 PythonMapper::PythonMapper() { }
 

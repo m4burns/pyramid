@@ -5,11 +5,6 @@
 extern "C" void init_pyramid(void);
 extern int mapper_main();
 
-class Pyramid {
-public:
-	Pyramid(const char* script);
-	~Pyramid();
-
 int main(int argc, char** argv)
 {
 	freopen("pyramid.log", "w", stdout);
