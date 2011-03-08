@@ -346,11 +346,12 @@
 
 1298507237 /usr/include/wx-2.8/wx/gtk/app.h
 
-1299532636 /users/m4burns/pyramid/GUI/PyramidMain.h
+1299552797 /users/m4burns/pyramid/GUI/PyramidMain.h
 	<wx/sizer.h>
 	<wx/button.h>
 	<wx/panel.h>
 	<wx/frame.h>
+	<wx/stattext.h>
 	<wx/timer.h>
 	<wx/statbmp.h>
 
@@ -870,4 +871,19 @@
 1298507237 /usr/include/wx-2.8/wx/gtk/msgdlg.h
 	"wx/defs.h"
 	"wx/dialog.h"
+
+1298507236 /usr/include/wx-2.8/wx/stattext.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/univ/stattext.h"
+	"wx/msw/stattext.h"
+	"wx/motif/stattext.h"
+	"wx/gtk/stattext.h"
+	"wx/gtk1/stattext.h"
+	"wx/mac/stattext.h"
+	"wx/cocoa/stattext.h"
+	"wx/os2/stattext.h"
+	"wx/palmos/stattext.h"
+
+1298507237 /usr/include/wx-2.8/wx/gtk/stattext.h
 
