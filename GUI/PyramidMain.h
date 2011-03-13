@@ -10,6 +10,9 @@
 #ifndef PYRAMIDMAIN_H
 #define PYRAMIDMAIN_H
 
+#include <vector>
+#include <string>
+
 //(*Headers(PyramidFrame)
 #include <wx/sizer.h>
 #include <wx/button.h>
@@ -19,6 +22,9 @@
 #include <wx/timer.h>
 #include <wx/statbmp.h>
 //*)
+
+class Pyramid;
+class MapperInterface;
 
 class PyramidFrame: public wxFrame
 {
@@ -96,6 +102,14 @@ class PyramidFrame: public wxFrame
 
         wxBitmap* port_act;
         wxBitmap* port_inact;
+
+        Pyramid* _pyramid;
+        MapperInterface* _pyramid_i;
+
+        bool inPortStatus[5], outPortStatus[5];
+        std::vector<std::pair<wxStaticText*, wxStaticBitmap*> > ioFields;
+
+        void UpdateNames();
 };
 
 #endif // PYRAMIDMAIN_H

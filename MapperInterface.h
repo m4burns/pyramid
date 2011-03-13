@@ -10,11 +10,8 @@ class MapperInterface {
 public:
 	MapperInterface();
 
-	std::vector<std::string> getInputs();
-	std::vector<std::string> getOutputs();
-
-	std::vector<bool> getActiveIns();
-	std::vector<bool> getActiveOuts();
+	std::vector<std::pair<std::string, bool> > getInputs();
+	std::vector<std::pair<std::string, bool> > getOutputs();
 
 private:
 	MapperCtl* ctl;

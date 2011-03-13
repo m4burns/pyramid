@@ -13,6 +13,7 @@
 						<object class="sizeritem">
 							<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="StaticBitmap1" member="yes">
 								<bitmap>logo.png</bitmap>
+								<style>wxNO_BORDER</style>
 							</object>
 							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<option>3</option>
@@ -63,8 +64,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP2" variable="InStat1" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP2" variable="InStat1" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -83,8 +86,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP3" variable="InStat2" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP3" variable="InStat2" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -103,8 +108,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP4" variable="InStat3" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP4" variable="InStat3" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -123,8 +130,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP5" variable="InStat4" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP5" variable="InStat4" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -143,8 +152,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP6" variable="InStat5" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP6" variable="InStat5" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -172,8 +183,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP7" variable="OutStat1" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP7" variable="OutStat1" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -192,8 +205,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP8" variable="OutStat2" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP8" variable="OutStat2" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -212,8 +227,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP9" variable="OutStat3" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP9" variable="OutStat3" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -232,8 +249,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP10" variable="OutStat4" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP10" variable="OutStat4" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -252,8 +271,10 @@
 											<option>4</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxStaticBitmap" name="ID_STATICBITMAP11" variable="OutStat5" member="yes" />
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<object class="wxStaticBitmap" name="ID_STATICBITMAP11" variable="OutStat5" member="yes">
+												<style>wxNO_BORDER</style>
+											</object>
+											<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -273,7 +294,7 @@
 			</object>
 		</object>
 		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
-			<interval>100</interval>
+			<interval>50</interval>
 			<handler function="OnCheckPorts" entry="EVT_TIMER" />
 		</object>
 	</object>

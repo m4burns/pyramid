@@ -4,6 +4,7 @@
 #include <sstream>
 #include <map>
 #include <windows.h>
+#include <process.h>
 #include "MIDIListener.h"
 #include "MIDIWriter.h"
 #include "PythonMapper.h"
@@ -14,7 +15,7 @@ class MapperCtl {
 public:
 	MapperCtl()
 	{
-		deadMutex = CreateMutex(NULL, FALSE, NULL);
+		accessMutex = CreateMutex(NULL, FALSE, NULL);
 		dead = false;
 
 		inPorts = MIDIListener::enumerateInputPorts();
@@ -34,11 +35,14 @@ public:
 		p = outPorts.begin();
 		while(p != outPorts.end())
 		{
-			printf("\t%s => %d\n", p->first.c_str(), p->second);
+			printf("\t%s <= %d\n", p->first.c_str(), p->second);
 			++p;
 		}
 
 		printf("\n");
+
+		in_states = new volatile bool[64];
+		out_states = new volatile bool[64];
 	}
 
 	~MapperCtl()
@@ -49,7 +53,10 @@ public:
 		for(std::map<int, MIDIWriter*>::iterator p = outs.begin(); p != outs.end(); ++p)
 			delete p->second;
 
-		CloseHandle(deadMutex);
+		delete[] in_states;
+		delete[] out_states;
+
+		CloseHandle(accessMutex);
 		CloseHandle(event);
 
 		_this = NULL;
@@ -109,6 +116,7 @@ public:
 				}
 				ins[port->second] = NULL;
 				mapper->inmap[port->second] = pnum;
+				named_ins[port->second] = buf;
 				mappers.insert(std::pair<int, PythonMapper*>(port->second, mapper));
 				bound = true;
 			} else {
@@ -119,7 +127,7 @@ public:
 				}
 				outs[port->second] = NULL;
 				mapper->outmap[pnum] = port->second;
-				printf("outmap[%d] = %d\n", pnum, port->second);
+				named_outs[port->second] = buf;
 			}
 		}
 		if(!bound)
@@ -135,7 +143,7 @@ public:
 		for(std::map<int, MIDIWriter*>::iterator p = outs.begin(); p != outs.end(); ++p)
 			p->second = new MIDIWriter(p->first);
 
-		printf("OK, entering main loop.");
+		printf("OK, entering main loop.\n");
 		while(!die())
 		{
 			WaitForSingleObject(event, INFINITE);
@@ -143,6 +151,8 @@ public:
 			{
 				if(!p->second->hasData())
 					continue;
+
+				in_states[p->first] = true;
 
 				std::vector<unsigned char> data = p->second->getData();
 				std::pair<std::multimap<int, PythonMapper*>::iterator,
@@ -201,6 +211,7 @@ public:
 		msg.push_back(m.note);
 		msg.push_back(m.velocity);
 		outs[aport]->sendMessage(msg);
+		out_states[aport] = true;
 	}
 
 	void controlToOutput(int aport, MIDIControlVal cv)
@@ -210,22 +221,23 @@ public:
 		msg.push_back(cv.control);
 		msg.push_back(cv.value);
 		outs[aport]->sendMessage(msg);
+		out_states[aport] = true;
 	}
 
 	bool die()
 	{
 		bool r;
-		WaitForSingleObject(deadMutex, INFINITE);
+		WaitForSingleObject(accessMutex, INFINITE);
 		r = dead;
-		ReleaseMutex(deadMutex);
+		ReleaseMutex(accessMutex);
 		return r;
 	}
 
 	void kill()
 	{
-		WaitForSingleObject(deadMutex, INFINITE);
+		WaitForSingleObject(accessMutex, INFINITE);
 		dead = true;
-		ReleaseMutex(deadMutex);
+		ReleaseMutex(accessMutex);
 		SetEvent(event);
 	}
 
@@ -235,9 +247,13 @@ private:
 	std::map<std::string, int> outPorts;
 	std::map<int, MIDIListener*> ins;
 	std::map<int, MIDIWriter*> outs;
+	std::map<int, std::string> named_ins;
+	std::map<int, std::string> named_outs;
+	volatile bool* in_states;
+	volatile bool* out_states;
 	std::multimap<int, PythonMapper*> mappers;
 	HANDLE event;
-	HANDLE deadMutex;
+	HANDLE accessMutex;
 	bool dead;
 	friend class MapperInterface;
 };
@@ -249,21 +265,29 @@ MapperInterface::MapperInterface()
 	ctl = MapperCtl::get();
 }
 
-std::vector<std::string> MapperInterface::getInputs()
+std::vector<std::pair<std::string, bool> > MapperInterface::getInputs()
 {
-	std::vector<std::string> res;
-	for(std::map<std::string, int>::iterator p = ctl->inPorts.begin(); p != ctl->inPorts.end(); ++p)
-		if(ctl->ins.find(p->second) != ctl->ins.end())
-			res.push_back(p->first);
+	std::vector<std::pair<std::string, bool> > res;
+
+	for(std::map<int, std::string>::iterator p = ctl->named_ins.begin(); p != ctl->named_ins.end(); ++p)
+	{
+		res.push_back(std::pair<std::string, bool>(p->second, (bool)ctl->in_states[p->first]));
+		ctl->in_states[p->first] = false;
+	}
+
 	return res;
 }
 
-std::vector<std::string> MapperInterface::getOutputs()
+std::vector<std::pair<std::string, bool> > MapperInterface::getOutputs()
 {
-	std::vector<std::string> res;
-	for(std::map<std::string, int>::iterator p = ctl->outPorts.begin(); p != ctl->outPorts.end(); ++p)
-		if(ctl->outs.find(p->second) != ctl->outs.end())
-			res.push_back(p->first);
+	std::vector<std::pair<std::string, bool> > res;
+
+	for(std::map<int, std::string>::iterator p = ctl->named_outs.begin(); p != ctl->named_outs.end(); ++p)
+	{
+		res.push_back(std::pair<std::string, bool>(p->second, (bool)ctl->out_states[p->first]));
+		ctl->out_states[p->first] = false;
+	}
+
 	return res;
 }
 
@@ -289,18 +313,28 @@ void PythonMapper::sendControl(int port, MIDIControlVal cv)
 		MapperCtl::get()->controlToOutput(outmap[port], cv);
 }
 
-int mapper_main()
+static HANDLE mapper_thread_handle;
+
+static void mapper_thread(void* userdata)
 {
-	MapperCtl* mc = MapperCtl::get();
+        MapperCtl* mc = MapperCtl::get();
 
-	mc->run();
-	delete mc;
+        mc->run();
+        delete mc;
 
-	return 0;
+	_endthread();
+}
+
+void start_mapper()
+{
+	SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+	mapper_thread_handle = (HANDLE)_beginthread(&mapper_thread, 0, NULL);
+	SetThreadPriority(mapper_thread_handle, THREAD_PRIORITY_ABOVE_NORMAL);
 }
 
 void kill_mapper()
 {
 	MapperCtl::get()->kill();
+	WaitForSingleObject(mapper_thread_handle, INFINITE);
 }
 

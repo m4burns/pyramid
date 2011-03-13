@@ -1,7 +1,8 @@
 CXX=/home/marc/mingw-cross/usr/bin/i686-pc-mingw32-g++
-CXXFLAGS=-D__WINDOWS_MM__ -I./rtmidi-1.0.12/ -I./Python27/include -g
+AR=/home/marc/mingw-cross/usr/bin/i686-pc-mingw32-ar
+CXXFLAGS=-D__WINDOWS_MM__ -I./rtmidi-1.0.12/ -I./Python27/include -O2
 
-all: pyramid
+all: libpyramid.a
 
 RtMidi.o: rtmidi-1.0.12/RtMidi.cpp
 	$(CXX) $(CXXFLAGS) -c rtmidi-1.0.12/RtMidi.cpp
@@ -24,8 +25,8 @@ pyramid_wrap.o: pyramid_wrap.cxx
 Pyramid.o: Pyramid.cpp
 	$(CXX) $(CXXFLAGS) -c Pyramid.cpp
 
-pyramid: RtMidi.o MIDIListener.o MIDIWriter.o MIDIMapper.o pyramid_wrap.o Pyramid.o
-	$(CXX) $(CXXFLAGS) -o pyramid RtMidi.o MIDIListener.o MIDIWriter.o MIDIMapper.o pyramid_wrap.o Pyramid.o -lwinmm Python27/libpython27.a
+libpyramid.a: RtMidi.o MIDIListener.o MIDIWriter.o MIDIMapper.o pyramid_wrap.o Pyramid.o
+	$(AR) rs libpyramid.a RtMidi.o MIDIListener.o MIDIWriter.o MIDIMapper.o pyramid_wrap.o Pyramid.o
 
 clean:
-	rm -f *.o pyramid pyramid_wrap.cxx
+	rm -f *.o libpyramid.a pyramid_wrap.cxx
