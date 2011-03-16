@@ -16,6 +16,11 @@ struct MIDIControlVal {
 	unsigned char value;
 };
 
+struct MIDIWheelVal {
+	unsigned char channel;
+	unsigned short value;
+};
+
 class PythonMapper {
 public:
 	PythonMapper();
@@ -24,6 +29,8 @@ public:
 
 	virtual void mapNote(int port, MIDINote note) = 0;
 	virtual void mapControl(int port, MIDIControlVal cv) = 0;
+	virtual void mapPressure(int port, MIDIControlVal cv) = 0;
+	virtual void mapPitchBend(int port, MIDIWheelVal wv) = 0;
 
 	virtual void sendNote(int port, MIDINote note);
 	virtual void sendControl(int port, MIDIControlVal cv);

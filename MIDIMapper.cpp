@@ -144,9 +144,14 @@ public:
 			p->second = new MIDIWriter(p->first);
 
 		printf("OK, entering main loop.\n");
-		while(!die())
+		for(;;)
 		{
 			WaitForSingleObject(event, INFINITE);
+			WaitForSingleObject(accessMutex, INFINITE);
+
+			if(dead)
+				break;
+
 			for(std::map<int, MIDIListener*>::iterator p = ins.begin(); p != ins.end(); ++p)
 			{
 				if(!p->second->hasData())
@@ -162,6 +167,7 @@ public:
 				for(std::multimap<int, PythonMapper*>::iterator q = r.first; q != r.second; ++q)
 					dataToMapper(q->first, data, q->second);
 			}
+			ReleaseMutex(accessMutex);
 		}
 	}
 
@@ -169,6 +175,9 @@ public:
 	{
 		// Actual port to assigned (local) port.
 		int lport = mapper->inmap[aport];
+		MIDINote m;
+		MIDIControlVal cv;
+		MIDIWheelVal wv;
 
 		// Translate and send messages to mapper.
 		for(std::vector<unsigned char>::iterator p = data.begin(); p != data.end(); ++p)
@@ -180,7 +189,6 @@ public:
 				case 0x8:
 				case 0x9:
 				case 0xA:
-					MIDINote m;
 					m.channel = (*p & 0xF);
 					m.note = *(p+1);
 					m.velocity = *(p+2);
@@ -189,17 +197,31 @@ public:
 						m.state = 0;
 					else
 						m.state = ((*p >> 4) - 0x8);
+					p += 3;
 					mapper->mapNote(lport, m);
 					break;
 				case 0xB:
-					MIDIControlVal cv;
 					cv.channel = (*p & 0xF);
 					cv.control = *(p+1);
 					cv.value = *(p+2);
+					p += 3;
 					mapper->mapControl(lport, cv);
 					break;
+				case 0xD:
+					cv.channel = (*p & 0xF);
+					cv.control = 0;
+					cv.value = *(p+1);
+					p += 2;
+					mapper->mapPressure(lport, cv);
+					break;
+				case 0xE:
+					wv.channel = (*p & 0xF);
+					wv.value = *(p+1) | (*(p+2) << 7);
+					p += 3;
+					mapper->mapPitchBend(lport, wv);
+					break;
 				default:
-					printf("Unimplemented: %X.\n", *p);
+					printf("Unimplemented: %X. Message discarded.\n");
 			}
 		}
 	}
@@ -222,15 +244,6 @@ public:
 		msg.push_back(cv.value);
 		outs[aport]->sendMessage(msg);
 		out_states[aport] = true;
-	}
-
-	bool die()
-	{
-		bool r;
-		WaitForSingleObject(accessMutex, INFINITE);
-		r = dead;
-		ReleaseMutex(accessMutex);
-		return r;
 	}
 
 	void kill()
