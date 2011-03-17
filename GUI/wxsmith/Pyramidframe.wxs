@@ -2,7 +2,7 @@
 <wxsmith>
 	<object class="wxFrame" name="PyramidFrame">
 		<title>Pyramid</title>
-		<size>400,276</size>
+		<size>500,276</size>
 		<style>wxDEFAULT_DIALOG_STYLE</style>
 		<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
 			<pos>272,168</pos>
@@ -19,29 +19,46 @@
 							<option>3</option>
 						</object>
 						<object class="sizeritem">
-							<object class="wxBoxSizer" variable="BoxSizer3" member="no">
-								<orient>wxVERTICAL</orient>
+							<object class="wxGridSizer" variable="GridSizer1" member="no">
+								<cols>2</cols>
+								<rows>2</rows>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON3" variable="Button3" member="yes">
+										<label>Load...</label>
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>3</border>
+									<option>1</option>
+								</object>
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
 										<label>Reload</label>
 										<handler function="OnReload" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
+									<border>3</border>
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON2" variable="Button2" member="yes">
+										<label>Simple...</label>
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>3</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON4" variable="Button4" member="yes">
 										<label>Quit</label>
 										<handler function="OnQuit" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
+									<border>3</border>
 									<option>1</option>
 								</object>
 							</object>
 							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-							<option>1</option>
+							<option>2</option>
 						</object>
 					</object>
 					<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

@@ -48,8 +48,10 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 
 //(*IdInit(PyramidFrame)
 const long PyramidFrame::ID_STATICBITMAP1 = wxNewId();
+const long PyramidFrame::ID_BUTTON3 = wxNewId();
 const long PyramidFrame::ID_BUTTON1 = wxNewId();
 const long PyramidFrame::ID_BUTTON2 = wxNewId();
+const long PyramidFrame::ID_BUTTON4 = wxNewId();
 const long PyramidFrame::ID_STATICTEXT1 = wxNewId();
 const long PyramidFrame::ID_STATICBITMAP2 = wxNewId();
 const long PyramidFrame::ID_STATICTEXT11 = wxNewId();
@@ -83,7 +85,7 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
 {
     //(*Initialize(PyramidFrame)
     wxStaticBoxSizer* StaticBoxSizer2;
-    wxBoxSizer* BoxSizer3;
+    wxGridSizer* GridSizer1;
     wxBoxSizer* BoxSizer10;
     wxBoxSizer* BoxSizer7;
     wxBoxSizer* BoxSizer11;
@@ -100,18 +102,22 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, id, _("Pyramid"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-    SetClientSize(wxSize(400,276));
+    SetClientSize(wxSize(500,276));
     Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(272,168), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxBitmap(wxImage(_T("logo.png"))), wxDefaultPosition, wxDefaultSize, wxNO_BORDER, _T("ID_STATICBITMAP1"));
     BoxSizer2->Add(StaticBitmap1, 3, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-    BoxSizer3 = new wxBoxSizer(wxVERTICAL);
+    GridSizer1 = new wxGridSizer(2, 2, 0, 0);
+    Button3 = new wxButton(Panel1, ID_BUTTON3, _("Load..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+    GridSizer1->Add(Button3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
     Button1 = new wxButton(Panel1, ID_BUTTON1, _("Reload"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
-    BoxSizer3->Add(Button1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    Button2 = new wxButton(Panel1, ID_BUTTON2, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    BoxSizer3->Add(Button2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer2->Add(BoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+    GridSizer1->Add(Button1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
+    Button2 = new wxButton(Panel1, ID_BUTTON2, _("Simple..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    GridSizer1->Add(Button2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
+    Button4 = new wxButton(Panel1, ID_BUTTON4, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
+    GridSizer1->Add(Button4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
+    BoxSizer2->Add(GridSizer1, 2, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     BoxSizer1->Add(BoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, Panel1, _("Inputs"));
@@ -186,7 +192,7 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     Timer1.Start(50, false);
 
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnReload);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnQuit);
+    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnQuit);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnCheckPorts);
     //*)
 

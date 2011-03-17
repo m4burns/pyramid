@@ -1,6 +1,6 @@
-- mapControl, mapWheel
-- handle other midi bits
-- give input # in mapX
+//- mapControl, mapWheel
+//- handle other midi bits
+//- give input # in mapX
 - spreadsheet translations?
-- replace midi device
+//- replace midi device
 - logo

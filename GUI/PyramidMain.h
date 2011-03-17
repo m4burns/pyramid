@@ -44,8 +44,10 @@ class PyramidFrame: public wxFrame
 
         //(*Identifiers(PyramidFrame)
         static const long ID_STATICBITMAP1;
+        static const long ID_BUTTON3;
         static const long ID_BUTTON1;
         static const long ID_BUTTON2;
+        static const long ID_BUTTON4;
         static const long ID_STATICTEXT1;
         static const long ID_STATICBITMAP2;
         static const long ID_STATICTEXT11;
@@ -77,6 +79,7 @@ class PyramidFrame: public wxFrame
         wxStaticText* OutName3;
         wxStaticText* OutName1;
         wxStaticText* OutName5;
+        wxButton* Button4;
         wxStaticBitmap* InStat2;
         wxStaticText* InName2;
         wxButton* Button1;
@@ -85,6 +88,7 @@ class PyramidFrame: public wxFrame
         wxStaticBitmap* InStat4;
         wxStaticText* OutName4;
         wxButton* Button2;
+        wxButton* Button3;
         wxTimer Timer1;
         wxStaticText* InName1;
         wxStaticBitmap* OutStat2;
