@@ -190,7 +190,9 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     BoxSizer1->SetSizeHints(Panel1);
     Timer1.SetOwner(this, ID_TIMER1);
     Timer1.Start(50, false);
+    FileDialog1 = new wxFileDialog(this, _("Select wrapper script"), wxEmptyString, wxEmptyString, _("*.py"), wxFD_DEFAULT_STYLE|wxFD_OPEN|wxFD_FILE_MUST_EXIST, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnLoadScript);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnReload);
     Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnQuit);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnCheckPorts);
@@ -283,7 +285,7 @@ void PyramidFrame::OnReload(wxCommandEvent& event)
     for(int i=0;i<10;++i)
         ioFields[i].first->SetLabel(_(""));
 
-    _pyramid = new Pyramid("pyramid_mappers.py");
+    _pyramid = new Pyramid(script_path.c_str());
     _pyramid_i = new MapperInterface();
     _pyramid->start();
 
@@ -291,4 +293,13 @@ void PyramidFrame::OnReload(wxCommandEvent& event)
         inPortStatus[i] = outPortStatus[i] = true;
 
     UpdateNames();
+}
+
+void PyramidFrame::OnLoadScript(wxCommandEvent& event)
+{
+    if(FileDialog1->ShowDialog() == wxID_OK)
+    {
+        script_path = FileDialog1->GetPath().mb_str();
+        OnReload(event);
+    }
 }

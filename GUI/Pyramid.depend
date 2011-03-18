@@ -346,9 +346,12 @@
 
 1298507237 /usr/include/wx-2.8/wx/gtk/app.h
 
-1299552797 /users/m4burns/pyramid/GUI/PyramidMain.h
+1300460110 /users/m4burns/pyramid/GUI/PyramidMain.h
+	<vector>
+	<string>
 	<wx/sizer.h>
 	<wx/button.h>
+	<wx/filedlg.h>
 	<wx/panel.h>
 	<wx/frame.h>
 	<wx/stattext.h>

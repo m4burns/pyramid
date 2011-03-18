@@ -16,6 +16,7 @@
 //(*Headers(PyramidFrame)
 #include <wx/sizer.h>
 #include <wx/button.h>
+#include <wx/filedlg.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
 #include <wx/stattext.h>
@@ -40,6 +41,7 @@ class PyramidFrame: public wxFrame
         void OnAbout(wxCommandEvent& event);
         void OnCheckPorts(wxTimerEvent& event);
         void OnReload(wxCommandEvent& event);
+        void OnLoadScript(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(PyramidFrame)
@@ -95,6 +97,7 @@ class PyramidFrame: public wxFrame
         wxStaticBitmap* InStat1;
         wxStaticBitmap* OutStat3;
         wxStaticText* InName5;
+        wxFileDialog* FileDialog1;
         wxStaticBitmap* InStat3;
         wxStaticBitmap* StaticBitmap1;
         wxStaticText* InName4;
@@ -112,6 +115,7 @@ class PyramidFrame: public wxFrame
 
         bool inPortStatus[5], outPortStatus[5];
         std::vector<std::pair<wxStaticText*, wxStaticBitmap*> > ioFields;
+        std::string script_path;
 
         void UpdateNames();
 };
