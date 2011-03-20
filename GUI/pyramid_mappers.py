@@ -1,16 +1,19 @@
 class TestMapper(pyramid.PythonMapper):
-	ctr = 0
-	def mapNote(self, port, note):
+        def mapNote(self, port, note):
+                try:
+                        print "Called mapNote: ", port, " ", note.channel, " ", note.note, " ", note.velocity, " ", note.state
+                        note.velocity = 3
+                                               
+                        self.sendNote(1, note)
+                except:
+                        print "Unexpected error:", sys.exc_info()[0]
+	def mapControl(self, port, cv):
 		try:
-			print "Called mapNote: ", port, " ", note.channel, " ", note.note, " ", note.velocity, " ", note.state
-			if note.state == 1:
-				self.ctr += 1
-			self.ctr %= 8
-			note.note += self.ctr
-			self.sendNote(0, note)
+			print "Called mapControl: ", port, " ", cv.channel, " ", cv.control, " ", cv.value
+			self.sendControl(1, cv)
 		except:
 			print "Unexpected error:", sys.exc_info()[0]
-
+not gonna compile
+ 
 m = TestMapper()
-m.selectPorts("0 => 'VirMIDI 3-0', 1 => 'VirMIDI 3-1', 2 <= 'LPK25 - LPK25 MIDI 1'")
-
+m.selectPorts("1 => 'VirMIDI 2-0', 0 <= 'VirMIDI 2-1'")

@@ -8,9 +8,10 @@ extern "C" void init_pyramid(void);
 extern void start_mapper();
 extern void kill_mapper();
 
-Pyramid::Pyramid(char* script)
+Pyramid::Pyramid(const char* script)
 {
 	freopen("pyramid.log", "w", stdout);
+	freopen("pyramid_errors.log", "w", stderr);
 	Py_SetProgramName(".\\pyramid");
 	Py_Initialize();
 	init_pyramid();
@@ -18,9 +19,13 @@ Pyramid::Pyramid(char* script)
 	PyRun_SimpleString(
 	"import sys\n"
 	"sys.path.append('./')\n"
+	"sys.stderr = open('python_errors.log', 'w', 0)\n"
 	"import pyramid\n");
 
-	PyObject* fp = PyFile_FromString(script, "r");
+	char* fn_local = new char[strlen(script)+1];
+	strcpy(fn_local, script);
+
+	PyObject* fp = PyFile_FromString(fn_local, "r");
 	if(!fp)
 	{
 		printf("Could not load mapping script '%s' for reading.\n", script);
@@ -28,7 +33,10 @@ Pyramid::Pyramid(char* script)
 		exit(1);
 	}
 	FILE* sfp = PyFile_AsFile(fp);
+
 	PyRun_AnyFileEx(sfp, script, 1);
+
+	delete[] fn_local;
 }
 
 Pyramid::~Pyramid()

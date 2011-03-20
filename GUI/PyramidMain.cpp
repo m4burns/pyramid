@@ -111,9 +111,9 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     GridSizer1 = new wxGridSizer(2, 2, 0, 0);
     Button3 = new wxButton(Panel1, ID_BUTTON3, _("Load..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
     GridSizer1->Add(Button3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
-    Button1 = new wxButton(Panel1, ID_BUTTON1, _("Reload"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    Button1 = new wxButton(Panel1, ID_BUTTON1, _("Edit..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
     GridSizer1->Add(Button1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
-    Button2 = new wxButton(Panel1, ID_BUTTON2, _("Simple..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    Button2 = new wxButton(Panel1, ID_BUTTON2, _("About"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
     GridSizer1->Add(Button2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
     Button4 = new wxButton(Panel1, ID_BUTTON4, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
     GridSizer1->Add(Button4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
@@ -193,13 +193,16 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     FileDialog1 = new wxFileDialog(this, _("Select wrapper script"), wxEmptyString, wxEmptyString, _("*.py"), wxFD_DEFAULT_STYLE|wxFD_OPEN|wxFD_FILE_MUST_EXIST, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 
     Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnLoadScript);
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnReload);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnEdit);
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnAbout);
     Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnQuit);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnCheckPorts);
     //*)
 
     port_act = new wxBitmap(wxImage(_("port_act.png")));
     port_inact = new wxBitmap(wxImage(_("port_inact.png")));
+
+    script_path = "pyramid_mappers.py";
 
     _pyramid = new Pyramid("pyramid_mappers.py");
     _pyramid_i = new MapperInterface();
@@ -239,8 +242,11 @@ void PyramidFrame::OnQuit(wxCommandEvent& event)
 
 void PyramidFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString msg = wxbuildinfo(long_f);
-    wxMessageBox(msg, _("Welcome to..."));
+    wxString msg;
+    msg << _("Pyramid (C) 2011 Marc Burns.\nPyramid uses Python scripts you write to\ntranslate MIDI messages.\nThis binary built ") << _(__DATE__) << _(".\n\nBuild info:\n");
+    msg << _("SWIG 2.0.1\nrtMidi 1.0.12\nlibpython 2.7.1\nMinGW GCC 4.5.0\n");
+    msg << wxbuildinfo(long_f);
+    wxMessageBox(msg, _("About Pyramid"));
 }
 
 void PyramidFrame::UpdateNames()
@@ -297,9 +303,13 @@ void PyramidFrame::OnReload(wxCommandEvent& event)
 
 void PyramidFrame::OnLoadScript(wxCommandEvent& event)
 {
-    if(FileDialog1->ShowDialog() == wxID_OK)
+    if(FileDialog1->ShowModal() == wxID_OK)
     {
         script_path = FileDialog1->GetPath().mb_str();
         OnReload(event);
     }
+}
+
+void PyramidFrame::OnEdit(wxCommandEvent& event)
+{
 }

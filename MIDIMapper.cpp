@@ -25,7 +25,7 @@ public:
 		std::multimap<std::string, int>::iterator p = inPorts.begin();
 		while(p != inPorts.end())
 		{
-			printf("\t%s => %d\n", p->first.c_str(), p->second);
+			printf("\t%d:\t%s\n", p->second, p->first.c_str());
 			++p;
 		}
 
@@ -35,7 +35,7 @@ public:
 		p = outPorts.begin();
 		while(p != outPorts.end())
 		{
-			printf("\t%s <= %d\n", p->first.c_str(), p->second);
+			printf("\t%d:\t%s\n", p->second, p->first.c_str());
 			++p;
 		}
 
@@ -165,7 +165,13 @@ public:
 					r = mappers.equal_range(p->first);
 
 				for(std::multimap<int, PythonMapper*>::iterator q = r.first; q != r.second; ++q)
-					dataToMapper(q->first, data, q->second);
+				{
+					try {
+						dataToMapper(q->first, data, q->second);
+					} catch(...) {
+						printf("Caught an exception while calling dataToMapper(...). Check your mapper class.");
+					}
+				}
 			}
 			ReleaseMutex(accessMutex);
 		}
@@ -197,27 +203,23 @@ public:
 						m.state = 0;
 					else
 						m.state = ((*p >> 4) - 0x8);
-					p += 3;
 					mapper->mapNote(lport, m);
 					break;
 				case 0xB:
 					cv.channel = (*p & 0xF);
 					cv.control = *(p+1);
 					cv.value = *(p+2);
-					p += 3;
 					mapper->mapControl(lport, cv);
 					break;
 				case 0xD:
 					cv.channel = (*p & 0xF);
 					cv.control = 0;
 					cv.value = *(p+1);
-					p += 2;
 					mapper->mapPressure(lport, cv);
 					break;
 				case 0xE:
 					wv.channel = (*p & 0xF);
 					wv.value = *(p+1) | (*(p+2) << 7);
-					p += 3;
 					mapper->mapPitchBend(lport, wv);
 					break;
 				default:

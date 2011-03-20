@@ -898,18 +898,19 @@
 1299599236 /home/marc/pyramid/GUI/PyramidApp.h
 	<wx/app.h>
 
-1300341424 /home/marc/pyramid/GUI/PyramidMain.h
+1300581703 /home/marc/pyramid/GUI/PyramidMain.h
 	<vector>
 	<string>
 	<wx/sizer.h>
 	<wx/button.h>
+	<wx/filedlg.h>
 	<wx/panel.h>
 	<wx/frame.h>
 	<wx/stattext.h>
 	<wx/timer.h>
 	<wx/statbmp.h>
 
-1300341424 source:/home/marc/pyramid/GUI/PyramidMain.cpp
+1300581706 source:/home/marc/pyramid/GUI/PyramidMain.cpp
 	"PyramidMain.h"
 	"Pyramid.h"
 	"MapperInterface.h"
@@ -1747,9 +1748,71 @@
 	"wx/defs.h"
 	"wx/dialog.h"
 
-1299730594 /home/marc/pyramid/Pyramid.h
+1300477349 /home/marc/pyramid/Pyramid.h
 
 1299727324 /home/marc/pyramid/MapperInterface.h
 	<vector>
 	<string>
+
+1279665435 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/filedlg.h
+	"wx/defs.h"
+	"wx/dialog.h"
+	"wx/arrstr.h"
+	"wx/generic/filedlgg.h"
+	"wx/msw/filedlg.h"
+	"wx/motif/filedlg.h"
+	"wx/gtk/filedlg.h"
+	"wx/generic/filedlgg.h"
+	"wx/gtk1/filedlg.h"
+	"wx/mac/filedlg.h"
+	"wx/cocoa/filedlg.h"
+	"wx/os2/filedlg.h"
+
+1279665435 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/generic/filedlgg.h
+	"wx/listctrl.h"
+	"wx/datetime.h"
+	"wx/filefn.h"
+	"wx/filedlg.h"
+
+1279665435 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/listctrl.h
+	"wx/defs.h"
+	"wx/listbase.h"
+	"wx/msw/listctrl.h"
+	"wx/mac/carbon/listctrl.h"
+	"wx/generic/listctrl.h"
+
+1279665435 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/listbase.h
+	"wx/colour.h"
+	"wx/font.h"
+	"wx/gdicmn.h"
+	"wx/event.h"
+
+1279665436 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/msw/listctrl.h
+	"wx/textctrl.h"
+
+1279665435 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/textctrl.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/dynarray.h"
+	"wx/gdicmn.h"
+	"wx/ioswrap.h"
+	"wx/x11/textctrl.h"
+	"wx/univ/textctrl.h"
+	"wx/msw/wince/textctrlce.h"
+	"wx/msw/textctrl.h"
+	"wx/motif/textctrl.h"
+	"wx/gtk/textctrl.h"
+	"wx/gtk1/textctrl.h"
+	"wx/mac/textctrl.h"
+	"wx/cocoa/textctrl.h"
+	"wx/os2/textctrl.h"
+
+1279665435 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/ioswrap.h
+	<iostream.h>
+	<iostream>
+	"wx/msw/winundef.h"
+
+1279665436 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/msw/textctrl.h
+
+1279665436 /home/marc/mingw-cross/usr/i686-pc-mingw32/include/wx-2.8/wx/msw/filedlg.h
 

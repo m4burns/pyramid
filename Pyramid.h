@@ -3,7 +3,7 @@
 
 class Pyramid {
 public:
-	Pyramid(char* script);
+	Pyramid(const char* script);
 	~Pyramid();
 	void start();
 	void stop();

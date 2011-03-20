@@ -42,6 +42,7 @@ class PyramidFrame: public wxFrame
         void OnCheckPorts(wxTimerEvent& event);
         void OnReload(wxCommandEvent& event);
         void OnLoadScript(wxCommandEvent& event);
+        void OnEdit(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(PyramidFrame)
