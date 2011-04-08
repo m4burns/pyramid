@@ -1,0 +1,9 @@
+*.o
+*.a
+GUI/bin/*
+pyramid_wrap.*
+pyramid.py
+Python27/*
+python27.dll
+Lib
+rtmidi-1.0.12/*
