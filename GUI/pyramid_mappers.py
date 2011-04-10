@@ -13,7 +13,6 @@ class TestMapper(pyramid.PythonMapper):
 			self.sendControl(1, cv)
 		except:
 			print "Unexpected error:", sys.exc_info()[0]
-not gonna compile
- 
+
 m = TestMapper()
 m.selectPorts("1 => 'VirMIDI 2-0', 0 <= 'VirMIDI 2-1'")
