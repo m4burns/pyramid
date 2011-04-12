@@ -10,6 +10,9 @@
 #include "PyramidMain.h"
 #include "Pyramid.h"
 #include "MapperInterface.h"
+#include <sys/stat.h>
+#include <string>
+#include <fstream>
 
 #include <wx/msgdlg.h>
 
@@ -44,6 +47,26 @@ wxString wxbuildinfo(wxbuildinfoformat format)
     }
 
     return wxbuild;
+}
+
+wxString getPyErrors()
+{
+    struct stat stat_buffer;
+    stat("python_errors.log", &stat_buffer);
+    wxString res;
+    if(stat_buffer.st_size > 0) {
+        res = _("Python raised the following error while compiling the mapper script:\n\n");
+        std::string linebfr;
+        std::ifstream pyerrors("python_errors.log");
+        while(!pyerrors.eof())
+        {
+            getline(pyerrors, linebfr);
+            res << wxString(linebfr.c_str(), wxConvUTF8) << _("\n");
+        }
+        pyerrors.close();
+    }
+
+    return res;
 }
 
 //(*IdInit(PyramidFrame)
@@ -207,6 +230,9 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     _pyramid = new Pyramid("pyramid_mappers.py");
     _pyramid_i = new MapperInterface();
     _pyramid->start();
+    wxString pyerrors = getPyErrors();
+    if(pyerrors.Length() > 0)
+        wxMessageBox(pyerrors, _("Python Error"));
 
     ioFields.push_back(std::pair<wxStaticText*, wxStaticBitmap*>(InName1, InStat1));
     ioFields.push_back(std::pair<wxStaticText*, wxStaticBitmap*>(InName2, InStat2));
@@ -294,6 +320,10 @@ void PyramidFrame::OnReload(wxCommandEvent& event)
     _pyramid = new Pyramid(script_path.c_str());
     _pyramid_i = new MapperInterface();
     _pyramid->start();
+
+    wxString pyerrors = getPyErrors();
+    if(pyerrors.Length() > 0)
+        wxMessageBox(pyerrors, _("Python Error"));
 
     for(int i=0;i<5;++i)
         inPortStatus[i] = outPortStatus[i] = true;
