@@ -1,5 +1,5 @@
-CXX=/home/marc/mingw-cross/usr/bin/i686-pc-mingw32-g++
-AR=/home/marc/mingw-cross/usr/bin/i686-pc-mingw32-ar
+CXX=$(HOME)/mingw-cross/usr/bin/i686-pc-mingw32-g++
+AR=$(HOME)/mingw-cross/usr/bin/i686-pc-mingw32-ar
 CXXFLAGS=-D__WINDOWS_MM__ -I./rtmidi-1.0.12/ -I./Python27/include -O2
 
 all: libpyramid.a

@@ -2,10 +2,11 @@
 <wxsmith>
 	<object class="wxFrame" name="PyramidFrame">
 		<title>Pyramid</title>
-		<size>500,276</size>
+		<size>500,320</size>
 		<style>wxDEFAULT_DIALOG_STYLE</style>
 		<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
-			<pos>272,168</pos>
+			<pos>0,0</pos>
+			<size>500,320</size>
 			<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 				<orient>wxVERTICAL</orient>
 				<object class="sizeritem">
@@ -310,6 +311,28 @@
 					<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 					<option>2</option>
 				</object>
+				<object class="sizeritem">
+					<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+						<object class="sizeritem">
+							<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="logPyramid" member="yes">
+								<style>wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxVSCROLL</style>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="logPython" member="yes">
+								<style>wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxVSCROLL</style>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+					</object>
+					<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+					<option>1</option>
+				</object>
 			</object>
 		</object>
 		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
@@ -320,6 +343,10 @@
 			<message>Select wrapper script</message>
 			<wildcard>*.py</wildcard>
 			<style>wxFD_DEFAULT_STYLE|wxFD_OPEN|wxFD_FILE_MUST_EXIST</style>
+		</object>
+		<object class="wxTimer" name="ID_TIMER2" variable="Timer2" member="yes">
+			<interval>200</interval>
+			<handler function="OnReadLogs" entry="EVT_TIMER" />
 		</object>
 	</object>
 </wxsmith>

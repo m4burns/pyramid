@@ -95,8 +95,11 @@ const long PyramidFrame::ID_STATICTEXT9 = wxNewId();
 const long PyramidFrame::ID_STATICBITMAP10 = wxNewId();
 const long PyramidFrame::ID_STATICTEXT10 = wxNewId();
 const long PyramidFrame::ID_STATICBITMAP11 = wxNewId();
+const long PyramidFrame::ID_TEXTCTRL1 = wxNewId();
+const long PyramidFrame::ID_TEXTCTRL2 = wxNewId();
 const long PyramidFrame::ID_PANEL1 = wxNewId();
 const long PyramidFrame::ID_TIMER1 = wxNewId();
+const long PyramidFrame::ID_TIMER2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(PyramidFrame,wxFrame)
@@ -109,6 +112,7 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     //(*Initialize(PyramidFrame)
     wxStaticBoxSizer* StaticBoxSizer2;
     wxGridSizer* GridSizer1;
+    wxBoxSizer* BoxSizer3;
     wxBoxSizer* BoxSizer10;
     wxBoxSizer* BoxSizer7;
     wxBoxSizer* BoxSizer11;
@@ -125,8 +129,8 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, id, _("Pyramid"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-    SetClientSize(wxSize(500,276));
-    Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(272,168), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+    SetClientSize(wxSize(500,320));
+    Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(0,0), wxSize(500,320), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxBitmap(wxImage(_T("logo.png"))), wxDefaultPosition, wxDefaultSize, wxNO_BORDER, _T("ID_STATICBITMAP1"));
@@ -208,18 +212,26 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     StaticBoxSizer2->Add(BoxSizer14, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     BoxSizer4->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     BoxSizer1->Add(BoxSizer4, 2, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+    BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+    logPyramid = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxVSCROLL, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    BoxSizer3->Add(logPyramid, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
+    logPython = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxVSCROLL, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    BoxSizer3->Add(logPython, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
+    BoxSizer1->Add(BoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     Panel1->SetSizer(BoxSizer1);
-    BoxSizer1->Fit(Panel1);
     BoxSizer1->SetSizeHints(Panel1);
     Timer1.SetOwner(this, ID_TIMER1);
     Timer1.Start(50, false);
     FileDialog1 = new wxFileDialog(this, _("Select wrapper script"), wxEmptyString, wxEmptyString, _("*.py"), wxFD_DEFAULT_STYLE|wxFD_OPEN|wxFD_FILE_MUST_EXIST, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
+    Timer2.SetOwner(this, ID_TIMER2);
+    Timer2.Start(200, false);
 
     Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnLoadScript);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnEdit);
     Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnAbout);
     Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnQuit);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnCheckPorts);
+    Connect(ID_TIMER2,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnReadLogs);
     //*)
 
     port_act = new wxBitmap(wxImage(_("port_act.png")));
@@ -342,4 +354,9 @@ void PyramidFrame::OnLoadScript(wxCommandEvent& event)
 
 void PyramidFrame::OnEdit(wxCommandEvent& event)
 {
+}
+
+void PyramidFrame::OnReadLogs(wxTimerEvent& event)
+{
+
 }
