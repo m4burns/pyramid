@@ -35,7 +35,6 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
 										<label>Edit...</label>
-										<handler function="OnEdit" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>3</border>
@@ -321,14 +320,6 @@
 							<border>2</border>
 							<option>1</option>
 						</object>
-						<object class="sizeritem">
-							<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="logPython" member="yes">
-								<style>wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxVSCROLL</style>
-							</object>
-							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-							<border>2</border>
-							<option>1</option>
-						</object>
 					</object>
 					<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 					<option>1</option>
@@ -343,10 +334,6 @@
 			<message>Select wrapper script</message>
 			<wildcard>*.py</wildcard>
 			<style>wxFD_DEFAULT_STYLE|wxFD_OPEN|wxFD_FILE_MUST_EXIST</style>
-		</object>
-		<object class="wxTimer" name="ID_TIMER2" variable="Timer2" member="yes">
-			<interval>200</interval>
-			<handler function="OnReadLogs" entry="EVT_TIMER" />
 		</object>
 	</object>
 </wxsmith>

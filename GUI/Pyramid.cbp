@@ -32,11 +32,12 @@
 		</Build>
 		<Compiler>
 			<Add option="-g" />
-			<Add option="`/users/m4burns/mingw-cross/usr/i686-pc-mingw32/bin/wx-config --cflags`" />
+			<Add option="`/home/marc/mingw-cross/usr/i686-pc-mingw32/bin/wx-config --cflags`" />
 			<Add directory=".." />
 		</Compiler>
 		<Linker>
-			<Add option="`/users/m4burns/mingw-cross/usr/i686-pc-mingw32/bin/wx-config --libs`" />
+			<Add option="`/home/marc/mingw-cross/usr/i686-pc-mingw32/bin/wx-config --libs`" />
+			<Add option="./pyramid_res.o" />
 			<Add library="pyramid" />
 			<Add library="../Python27/libpython27.a" />
 			<Add library="winmm" />

@@ -20,7 +20,6 @@ Pyramid::Pyramid(const char* script)
 	"import sys\n"
 	"sys.path.append('./')\n"
 	"sys.stderr = open('python_errors.log', 'w', 0)\n"
-	"sys.stdout = open('python_output.log', 'w', 0)\n"
 	"import pyramid\n");
 
 	char* fn_local = new char[strlen(script)+1];

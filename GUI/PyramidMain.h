@@ -43,8 +43,6 @@ class PyramidFrame: public wxFrame
         void OnCheckPorts(wxTimerEvent& event);
         void OnReload(wxCommandEvent& event);
         void OnLoadScript(wxCommandEvent& event);
-        void OnEdit(wxCommandEvent& event);
-        void OnReadLogs(wxTimerEvent& event);
         //*)
 
         //(*Identifiers(PyramidFrame)
@@ -74,10 +72,8 @@ class PyramidFrame: public wxFrame
         static const long ID_STATICTEXT10;
         static const long ID_STATICBITMAP11;
         static const long ID_TEXTCTRL1;
-        static const long ID_TEXTCTRL2;
         static const long ID_PANEL1;
         static const long ID_TIMER1;
-        static const long ID_TIMER2;
         //*)
 
         //(*Declarations(PyramidFrame)
@@ -96,13 +92,11 @@ class PyramidFrame: public wxFrame
         wxStaticBitmap* InStat4;
         wxStaticText* OutName4;
         wxButton* Button2;
-        wxTextCtrl* logPython;
         wxButton* Button3;
         wxTimer Timer1;
         wxStaticText* InName1;
         wxStaticBitmap* OutStat2;
         wxStaticBitmap* InStat1;
-        wxTimer Timer2;
         wxStaticBitmap* OutStat3;
         wxStaticText* InName5;
         wxFileDialog* FileDialog1;
