@@ -899,7 +899,7 @@
 1301798771 /home/marc/pyramid/GUI/PyramidApp.h
 	<wx/app.h>
 
-1303669775 /home/marc/pyramid/GUI/PyramidMain.h
+1304034482 /home/marc/pyramid/GUI/PyramidMain.h
 	<vector>
 	<string>
 	<wx/sizer.h>
@@ -912,7 +912,7 @@
 	<wx/timer.h>
 	<wx/statbmp.h>
 
-1303669761 source:/home/marc/pyramid/GUI/PyramidMain.cpp
+1304033370 source:/home/marc/pyramid/GUI/PyramidMain.cpp
 	"PyramidMain.h"
 	"Pyramid.h"
 	"MapperInterface.h"

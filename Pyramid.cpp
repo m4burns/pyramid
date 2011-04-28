@@ -11,7 +11,7 @@ extern void kill_mapper();
 Pyramid::Pyramid(const char* script)
 {
 	freopen("pyramid.log", "w", stdout);
-	freopen("pyramid_errors.log", "w", stderr);
+	freopen("pyramid.log", "a", stderr);
 	Py_SetProgramName(".\\pyramid");
 	Py_Initialize();
 	init_pyramid();
@@ -20,6 +20,7 @@ Pyramid::Pyramid(const char* script)
 	"import sys\n"
 	"sys.path.append('./')\n"
 	"sys.stderr = open('python_errors.log', 'w', 0)\n"
+	"sys.stdout = open('pyramid.log', 'a', 0)\n"
 	"import pyramid\n");
 
 	char* fn_local = new char[strlen(script)+1];

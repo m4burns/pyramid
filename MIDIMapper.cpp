@@ -144,6 +144,7 @@ public:
 			p->second = new MIDIWriter(p->first);
 
 		printf("OK, entering main loop.\n");
+		fflush(stdout);
 		for(;;)
 		{
 			WaitForSingleObject(event, INFINITE);
@@ -170,6 +171,7 @@ public:
 						dataToMapper(q->first, data, q->second);
 					} catch(...) {
 						printf("Caught an exception while calling dataToMapper(...). Check your mapper class.");
+						fflush(stdout);
 					}
 				}
 			}

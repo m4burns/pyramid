@@ -98,6 +98,7 @@ const long PyramidFrame::ID_STATICBITMAP11 = wxNewId();
 const long PyramidFrame::ID_TEXTCTRL1 = wxNewId();
 const long PyramidFrame::ID_PANEL1 = wxNewId();
 const long PyramidFrame::ID_TIMER1 = wxNewId();
+const long PyramidFrame::ID_TIMER2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(PyramidFrame,wxFrame)
@@ -126,9 +127,9 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer5;
     wxStaticBoxSizer* StaticBoxSizer1;
 
-    Create(parent, id, _("Pyramid"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-    SetClientSize(wxSize(500,320));
-    Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(0,0), wxSize(500,320), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+    Create(parent, wxID_ANY, _("Pyramid"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
+    SetClientSize(wxSize(500,404));
+    Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(0,0), wxSize(500,352), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxBitmap(wxImage(_T("logo.png"))), wxDefaultPosition, wxDefaultSize, wxNO_BORDER, _T("ID_STATICBITMAP1"));
@@ -136,7 +137,7 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     GridSizer1 = new wxGridSizer(2, 2, 0, 0);
     Button3 = new wxButton(Panel1, ID_BUTTON3, _("Load..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
     GridSizer1->Add(Button3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
-    Button1 = new wxButton(Panel1, ID_BUTTON1, _("Edit..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    Button1 = new wxButton(Panel1, ID_BUTTON1, _("Reload"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
     GridSizer1->Add(Button1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
     Button2 = new wxButton(Panel1, ID_BUTTON2, _("About"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
     GridSizer1->Add(Button2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
@@ -211,19 +212,23 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
     BoxSizer4->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     BoxSizer1->Add(BoxSizer4, 2, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-    logPyramid = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxVSCROLL, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    logPyramid = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     BoxSizer3->Add(logPyramid, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
-    BoxSizer1->Add(BoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+    BoxSizer1->Add(BoxSizer3, 2, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     Panel1->SetSizer(BoxSizer1);
     BoxSizer1->SetSizeHints(Panel1);
     Timer1.SetOwner(this, ID_TIMER1);
     Timer1.Start(50, false);
     FileDialog1 = new wxFileDialog(this, _("Select wrapper script"), wxEmptyString, wxEmptyString, _("*.py"), wxFD_DEFAULT_STYLE|wxFD_OPEN|wxFD_FILE_MUST_EXIST, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
+    Timer2.SetOwner(this, ID_TIMER2);
+    Timer2.Start(200, false);
 
     Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnLoadScript);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnReload);
     Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnAbout);
     Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PyramidFrame::OnQuit);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnCheckPorts);
+    Connect(ID_TIMER2,wxEVT_TIMER,(wxObjectEventFunction)&PyramidFrame::OnReadLog);
     //*)
 
     port_act = new wxBitmap(wxImage(_("port_act.png")));
@@ -254,6 +259,7 @@ PyramidFrame::PyramidFrame(wxWindow* parent,wxWindowID id)
         inPortStatus[i] = outPortStatus[i] = true;
 
     UpdateNames();
+    llRead = llSize = 0;
 }
 
 PyramidFrame::~PyramidFrame()
@@ -333,6 +339,7 @@ void PyramidFrame::OnReload(wxCommandEvent& event)
         inPortStatus[i] = outPortStatus[i] = true;
 
     UpdateNames();
+    llRead = llSize = 0;
 }
 
 void PyramidFrame::OnLoadScript(wxCommandEvent& event)
@@ -342,4 +349,38 @@ void PyramidFrame::OnLoadScript(wxCommandEvent& event)
         script_path = FileDialog1->GetPath().mb_str();
         OnReload(event);
     }
+}
+
+void PyramidFrame::OnReadLog(wxTimerEvent& event)
+{
+    struct stat stat_buffer;
+    stat("pyramid.log", &stat_buffer);
+    wxString res;
+    if(stat_buffer.st_size == llSize)
+        return;
+
+    llSize = stat_buffer.st_size;
+
+    std::string bfr;
+    std::ifstream log("pyramid.log");
+    if(!log.good())
+    {
+        logPyramid->AppendText(_("Error reading pyramid.log."));
+        return;
+    }
+    for(int i=0;i<llRead && !log.eof();++i)
+        std::getline(log, bfr);
+
+    while(!log.eof())
+    {
+        std::getline(log, bfr);
+        if(log.eof())
+            break;
+
+        bfr = (std::string("\n") + bfr);
+        logPyramid->AppendText(wxString(bfr.c_str(), wxConvUTF8));
+        ++llRead;
+    }
+
+    log.close();
 }
