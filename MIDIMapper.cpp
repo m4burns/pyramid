@@ -40,6 +40,7 @@ public:
 		}
 
 		printf("\n");
+		fflush(stdout);
 
 		in_states = new volatile bool[64];
 		out_states = new volatile bool[64];
@@ -60,6 +61,7 @@ public:
 		CloseHandle(event);
 
 		_this = NULL;
+		fflush(stdout);
 	}
 
 	static MapperCtl* get()
@@ -132,6 +134,7 @@ public:
 		}
 		if(!bound)
 			printf("Warning: Mapper %d not bound to any inputs.\n", ord);
+		fflush(stdout);
 	}
 
 	void run()
@@ -191,7 +194,13 @@ public:
 		for(std::vector<unsigned char>::iterator p = data.begin(); p != data.end(); ++p)
 		{
 			if(!(*p & 0x80))
+			/*{
+				std::vector<unsigned char> msg;
+				msg.push_back(*p);
+				outs.begin()->second->sendMessage(msg);
+			}*/
 				continue;
+
 			switch(*p >> 4)
 			{
 				case 0x8:
@@ -225,7 +234,13 @@ public:
 					mapper->mapPitchBend(lport, wv);
 					break;
 				default:
-					printf("Unimplemented: %X. Message discarded.\n");
+					/*{
+						std::vector<unsigned char> msg;
+						msg.push_back(*p);
+						int pn = outs.begin()->first;
+						outs.begin()->second->sendMessage(msg);
+					}*/
+					break;
 			}
 		}
 	}

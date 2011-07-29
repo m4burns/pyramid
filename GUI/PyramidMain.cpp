@@ -271,6 +271,8 @@ PyramidFrame::~PyramidFrame()
 void PyramidFrame::OnQuit(wxCommandEvent& event)
 {
     _pyramid->stop();
+    Timer1.Stop();
+    Timer2.Stop();
     delete _pyramid_i;
     delete _pyramid;
     Close();

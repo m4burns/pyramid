@@ -38,9 +38,9 @@ MIDIListener::MIDIListener(unsigned int port, HANDLE notifyEvent)
 }
 
 MIDIListener::~MIDIListener()
-{
-	CloseHandle(con->accessMutex);
+{	
 	in->closePort();
+	CloseHandle(con->accessMutex);
 
 	delete con;
 	delete midi_data;
